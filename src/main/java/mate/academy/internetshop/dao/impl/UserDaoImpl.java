@@ -1,12 +1,12 @@
-package mate.academy.internetshop.dao.impl;
+package mate.internetshop.dao.impl;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import mate.academy.internetshop.dao.UserDao;
-import mate.academy.internetshop.db.Storage;
-import mate.academy.internetshop.lib.Dao;
-import mate.academy.internetshop.model.User;
+import mate.internetshop.dao.UserDao;
+import mate.internetshop.db.Storage;
+import mate.internetshop.lib.Dao;
+import mate.internetshop.model.User;
 
 @Dao
 public class UserDaoImpl implements UserDao {

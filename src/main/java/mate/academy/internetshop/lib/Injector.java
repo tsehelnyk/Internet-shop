@@ -1,4 +1,4 @@
-package mate.academy.internetshop.lib;
+package mate.internetshop.lib;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.List;
  * Students will implement this on Lesson 16 (Servlet)
  */
 public class Injector {
-    private static final String PROJECT_MAIN_PACKAGE = "mate.academy.internetshop";
+    private static final String PROJECT_MAIN_PACKAGE = "mate/internetshop";
     private static List<Class> classes = new ArrayList<>();
 
     static {

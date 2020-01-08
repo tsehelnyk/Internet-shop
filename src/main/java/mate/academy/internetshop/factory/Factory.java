@@ -1,21 +1,21 @@
-package mate.academy.internetshop.factory;
+package mate.internetshop.factory;
 
-import mate.academy.internetshop.dao.BucketDao;
-import mate.academy.internetshop.dao.ItemDao;
-import mate.academy.internetshop.dao.OrderDao;
-import mate.academy.internetshop.dao.UserDao;
-import mate.academy.internetshop.dao.impl.BucketDaoImpl;
-import mate.academy.internetshop.dao.impl.ItemDaoImpl;
-import mate.academy.internetshop.dao.impl.OrderDaoImpl;
-import mate.academy.internetshop.dao.impl.UserDaoImpl;
-import mate.academy.internetshop.service.BucketService;
-import mate.academy.internetshop.service.ItemService;
-import mate.academy.internetshop.service.OrderService;
-import mate.academy.internetshop.service.UserService;
-import mate.academy.internetshop.service.impl.BucketServiceImpl;
-import mate.academy.internetshop.service.impl.ItemServiceImpl;
-import mate.academy.internetshop.service.impl.OrderServiceImpl;
-import mate.academy.internetshop.service.impl.UserServiceImpl;
+import mate.internetshop.dao.impl.BucketDaoImpl;
+import mate.internetshop.dao.impl.ItemDaoImpl;
+import mate.internetshop.dao.impl.OrderDaoImpl;
+import mate.internetshop.dao.impl.UserDaoImpl;
+import mate.internetshop.service.BucketService;
+import mate.internetshop.service.ItemService;
+import mate.internetshop.service.OrderService;
+import mate.internetshop.service.UserService;
+import mate.internetshop.service.impl.BucketServiceImpl;
+import mate.internetshop.service.impl.ItemServiceImpl;
+import mate.internetshop.service.impl.OrderServiceImpl;
+import mate.internetshop.service.impl.UserServiceImpl;
+import mate.internetshop.dao.BucketDao;
+import mate.internetshop.dao.ItemDao;
+import mate.internetshop.dao.OrderDao;
+import mate.internetshop.dao.UserDao;
 
 public class Factory {
 
