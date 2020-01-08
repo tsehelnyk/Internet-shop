@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.model.Order;
-import mate.academy.internetshop.model.User;
 
 public interface OrderService {
     Order create(Order order);

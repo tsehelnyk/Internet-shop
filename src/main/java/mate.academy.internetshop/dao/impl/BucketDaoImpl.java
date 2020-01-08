@@ -36,7 +36,7 @@ public class BucketDaoImpl implements BucketDao {
         Storage.buckets.set(Storage.buckets.indexOf(oldBucket), bucket);
         return bucket;
     }
-    
+
     @Override
     public boolean delete(Long id) {
         Storage.buckets.remove(get(id));
@@ -44,12 +44,12 @@ public class BucketDaoImpl implements BucketDao {
     }
 
     @Override
-    public List<Bucket> getAll() {
-        return Storage.buckets;
+    public boolean delete(Bucket bucket) {
+        return Storage.buckets.remove(bucket);
     }
 
     @Override
-    public boolean delete(Bucket bucket) {
-        return Storage.buckets.remove(bucket);
+    public List<Bucket> getAll() {
+        return Storage.buckets;
     }
 }
