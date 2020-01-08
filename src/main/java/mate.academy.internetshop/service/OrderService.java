@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.model.Order;
+import mate.academy.internetshop.model.User;
 
 public interface OrderService {
     Order create(Order order);
@@ -17,8 +18,8 @@ public interface OrderService {
 
     boolean delete(Order order);
 
-    Order completeOrder(List<Item> items, Long userId);
+    Order completeOrder(List<Item> items, User user);
 
-    Optional<List> getUserOrders(Long userId);
+    Optional<List> getUserOrders(User user);
 
 }
