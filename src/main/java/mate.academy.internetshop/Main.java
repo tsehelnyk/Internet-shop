@@ -45,6 +45,6 @@ public class Main {
         System.out.println(item.getName() + " " + item.getId());
         bucketService.addItem(bucket, item);
         Order order  = orderService.completeOrder(bucket.getItems(), user);
-        System.out.println(order.getUser() + " " + order.getId() + " " + order.getItems());;
+        System.out.println(order.getUser() + " " + order.getId() + " " + order.getItems());
     }
 }
