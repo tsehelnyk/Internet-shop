@@ -1,4 +1,4 @@
-package mate.internetshop.model;
+package mate.academy.internetshop.model;
 
 public class User {
     private String name;

@@ -1,13 +1,13 @@
-package mate.internetshop.dao.impl;
+package mate.academy.internetshop.dao.impl;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import mate.internetshop.dao.OrderDao;
-import mate.internetshop.db.Storage;
-import mate.internetshop.lib.Dao;
-import mate.internetshop.model.Order;
+import mate.academy.internetshop.dao.OrderDao;
+import mate.academy.internetshop.db.Storage;
+import mate.academy.internetshop.lib.Dao;
+import mate.academy.internetshop.model.Order;
 
 @Dao
 public class OrderDaoImpl implements OrderDao {
