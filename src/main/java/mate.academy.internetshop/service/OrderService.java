@@ -18,8 +18,8 @@ public interface OrderService {
 
     boolean delete(Order order);
 
-    Order completeOrder(List<Item> items, User user);
+    Order completeOrder(List<Item> items, Long userId);
 
-    Optional<List> getUserOrders(User user);
+    Optional<List> getUserOrders(Long userId);
 
 }

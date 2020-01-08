@@ -1,13 +1,14 @@
 package mate.academy.internetshop.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import mate.academy.internetshop.model.Order;
 
 public interface OrderDao {
     Order create(Order order);
 
-    Order get(Long id);
+    Optional<Order> get(Long id);
 
     List<Order> getAll();
 

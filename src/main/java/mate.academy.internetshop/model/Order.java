@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Order {
     private Long id;
-    private User user;
+    private Long userId;
     private List<Item> items;
 
     public Long getId() {
@@ -15,12 +15,12 @@ public class Order {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUser() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Long userId) {
+        this.userId = userId;
     }
 
     public List<Item> getItems() {

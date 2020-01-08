@@ -1,5 +1,6 @@
 package mate.academy.internetshop;
 
+import java.util.ArrayList;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.lib.Injector;
 import mate.academy.internetshop.model.Bucket;
@@ -38,13 +39,13 @@ public class Main {
         User user = userService.create(new User());
         user.setName("Some user");
         Bucket bucket = bucketService.create(new Bucket());
-        bucket.setUser(user);
-        bucket.setItems(itemService.getAllItems());
+        bucket.setUser(user.getId());
+        bucket.setItems(new ArrayList<>(itemService.getAllItems()));
         Item item = itemService.create(new Item());
         item.setName("some item");
         System.out.println(item.getName() + " " + item.getId());
         bucketService.addItem(bucket, item);
-        Order order  = orderService.completeOrder(bucket.getItems(), user);
-        System.out.println(order.getUser() + " " + order.getId() + " " + order.getItems());
+        Order order  = orderService.completeOrder(bucket.getItems(), user.getId());
+        System.out.println(userService.get(order.getUser()) + " " + order.getId() + " " + order.getItems());
     }
 }

@@ -1,8 +1,8 @@
 package mate.academy.internetshop.dao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.db.Storage;
@@ -23,21 +23,21 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Order get(Long id) {
-        return Storage.orders.stream()
+    public Optional<Order> get(Long id) {
+        return Optional.of(Storage.orders.stream()
                 .filter(order -> order.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("id " + id + " does not exist."));
+                .orElseThrow(() -> new NoSuchElementException("id " + id + " does not exist.")));
     }
 
     @Override
     public List<Order> getAll() {
-        return new ArrayList<>(Storage.orders);
+        return Storage.orders;
     }
 
     @Override
     public Order update(Order order) {
-        Order oldOrder = get(order.getId());
+        Order oldOrder = get(order.getId()).get();
         Storage.orders.set(Storage.orders.indexOf(oldOrder), order);
         return order;
     }
