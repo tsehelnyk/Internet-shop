@@ -2,6 +2,7 @@ package mate.academy.internetshop.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,8 @@ public class GetUserOrders extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         User user = userService.get(USER_ID);
-        List<Order> orders = orderService.getUserOrders(user).get();
+        List<Order> orders = orderService.getUserOrders(user)
+                .orElseThrow(NoSuchElementException::new);
         req.setAttribute("orders", orders);
         req.getRequestDispatcher("/WEB-INF/views/orders.jsp").forward(req, resp);
     }

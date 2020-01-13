@@ -2,6 +2,7 @@ package mate.academy.internetshop.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,8 @@ public class GetAllBucketItems extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        List<Item> items = bucketService.getAllItems(bucketService.get(USER_ID)).get();
+        List<Item> items = bucketService.getAllItems(bucketService.get(USER_ID))
+                .orElseThrow(NoSuchElementException::new);
         req.setAttribute("items", items);
         req.getRequestDispatcher("/WEB-INF/views/bucket.jsp").forward(req, resp);
     }
