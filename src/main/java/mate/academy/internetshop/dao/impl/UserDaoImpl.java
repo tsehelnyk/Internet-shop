@@ -42,8 +42,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean delete(Long id) {
-        User user = get(id).get();
-        return user != null ? Storage.users.remove(user) : false;
+        return Storage.users.removeIf(user -> user.getId().equals(id));
     }
 
     @Override

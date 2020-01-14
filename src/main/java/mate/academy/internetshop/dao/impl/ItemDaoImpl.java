@@ -37,8 +37,7 @@ public class ItemDaoImpl implements ItemDao {
 
     @Override
     public boolean delete(Long id) {
-        Item item = get(id).get();
-        return item != null ? Storage.items.remove(item) : false;
+        return Storage.items.removeIf(item -> item.getId().equals(id));
     }
 
     @Override
