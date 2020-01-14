@@ -7,6 +7,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import mate.academy.internetshop.controller.InjectInitializer;
+import org.apache.log4j.Logger;
 
 /**
  * Students will implement this on Lesson 16 (Servlet)
@@ -14,12 +16,14 @@ import java.util.List;
 public class Injector {
     private static final String PROJECT_MAIN_PACKAGE = "mate.academy.internetshop";
     private static List<Class> classes = new ArrayList<>();
+    private static final Logger LOGGER = Logger.getLogger(InjectInitializer.class);
 
     static {
         try {
             classes.addAll(getClasses(PROJECT_MAIN_PACKAGE));
         } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Injector can't get classes: ", e);
+            throw new RuntimeException(e);
         }
     }
 
