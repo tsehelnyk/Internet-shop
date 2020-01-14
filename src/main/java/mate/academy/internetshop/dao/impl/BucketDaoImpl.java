@@ -24,7 +24,7 @@ public class BucketDaoImpl implements BucketDao {
     @Override
     public Optional<Bucket> get(Long id) {
         return Storage.buckets.stream()
-                .filter(bucket -> bucket.getId().equals(id))
+                .filter(bucket -> bucket.getUser().equals(id))
                 .findFirst();
     }
 
@@ -37,8 +37,7 @@ public class BucketDaoImpl implements BucketDao {
 
     @Override
     public boolean delete(Long id) {
-        Storage.buckets.remove(get(id));
-        return true;
+        return Storage.buckets.removeIf(bucket -> bucket.getId().equals(id));
     }
 
     @Override

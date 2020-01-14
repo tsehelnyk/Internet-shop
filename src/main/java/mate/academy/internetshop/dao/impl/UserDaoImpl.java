@@ -1,5 +1,6 @@
 package mate.academy.internetshop.dao.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import mate.academy.internetshop.dao.UserDao;
@@ -28,6 +29,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public List<User> getAll() {
+        return Storage.users;
+    }
+
+    @Override
     public User update(User user) {
         User oldUser = get(user.getId()).get();
         Storage.users.set(Storage.users.indexOf(oldUser), user);
@@ -36,8 +42,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean delete(Long id) {
-        Storage.users.remove(get(id));
-        return true;
+        return Storage.users.removeIf(user -> user.getId().equals(id));
     }
 
     @Override

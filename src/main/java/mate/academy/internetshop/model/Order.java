@@ -1,11 +1,16 @@
 package mate.academy.internetshop.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
     private Long id;
     private Long userId;
     private List<Item> items;
+
+    public Order() {
+        this.items = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;
