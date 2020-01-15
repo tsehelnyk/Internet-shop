@@ -36,14 +36,14 @@
             </div>
 
             <div class="container signin">
-                <p>Already have an account? <a href="#">Sign in</a>.</p>
+                <p>Already have an account? <a href="/internet_shop_war_exploded/login">Sign in</a>.</p>
             </div>
         </form>
         <hr>
-        <a href="/internet_shop_war_exploded/index">Main menu</a>
+        <a href="/internet_shop_war_exploded/servlet/index">Main menu</a>
         <hr>
         <hr>
-        <a href="/internet_shop_war_exploded/users">List of users</a>
+        <a href="/internet_shop_war_exploded/servlet/users">List of users</a>
         <hr>
 
     </body>

@@ -31,13 +31,13 @@
                         <c:out value="${order.user}" />
                     </td>
                     <td>
-                        <a href="/internet_shop_war_exploded/delOrder?order_id=${order.id}">DELETE</a>
+                        <a href="/internet_shop_war_exploded/servlet/delOrder?order_id=${order.id}">DELETE</a>
                     </td>
                 </tr>
             </c:forEach>
         </table>
         <hr>
-        <a href="/internet_shop_war_exploded/index">Main menu</a>
+        <a href="/internet_shop_war_exploded/servlet/index">Main menu</a>
         <hr>
     </body>
 </html>
