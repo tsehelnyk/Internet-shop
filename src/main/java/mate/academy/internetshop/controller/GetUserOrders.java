@@ -15,8 +15,6 @@ import mate.academy.internetshop.service.UserService;
 
 public class GetUserOrders extends HttpServlet {
 
-    private static final Long USER_ID = 0L;
-
     @Inject
     private static UserService userService;
     @Inject
@@ -25,7 +23,8 @@ public class GetUserOrders extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        User user = userService.get(USER_ID);
+        Long userId = (Long) req.getSession(true).getAttribute("user_id");
+        User user = userService.get(userId);
         List<Order> orders = orderService.getUserOrders(user)
                 .orElseThrow(NoSuchElementException::new);
         req.setAttribute("orders", orders);
