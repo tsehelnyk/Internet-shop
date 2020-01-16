@@ -14,8 +14,6 @@ import mate.academy.internetshop.service.UserService;
 
 public class GetAllBucketItems extends HttpServlet {
 
-    private static final Long USER_ID = 0L;
-
     @Inject
     private static UserService userService;
     @Inject
@@ -24,7 +22,8 @@ public class GetAllBucketItems extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        List<Item> items = bucketService.getAllItems(bucketService.get(USER_ID))
+        Long userId = (Long) req.getSession(true).getAttribute("user_id");
+        List<Item> items = bucketService.getAllItems(bucketService.get(userId))
                 .orElseThrow(NoSuchElementException::new);
         req.setAttribute("items", items);
         req.getRequestDispatcher("/WEB-INF/views/bucket.jsp").forward(req, resp);
