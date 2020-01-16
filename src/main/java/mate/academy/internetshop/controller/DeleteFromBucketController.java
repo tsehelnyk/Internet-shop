@@ -13,8 +13,6 @@ import mate.academy.internetshop.service.ItemService;
 
 public class DeleteFromBucketController extends HttpServlet {
 
-    private static final Long USER_ID = 0L;
-
     @Inject
     private static ItemService itemService;
     @Inject
