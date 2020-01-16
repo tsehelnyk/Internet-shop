@@ -2,7 +2,6 @@ package mate.academy.internetshop.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +14,6 @@ import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
 import org.apache.log4j.Logger;
 
-@WebServlet(name = "login", urlPatterns = "/login")
 public class LoginController extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(LoginController.class);

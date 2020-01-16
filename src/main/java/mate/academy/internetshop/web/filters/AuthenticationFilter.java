@@ -55,7 +55,6 @@ public class AuthenticationFilter implements Filter {
             throws IOException, ServletException {
         LOGGER.info("User wasn't authenticated.");
         req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
-        //filterChain.doFilter(req, resp);
     }
 
     @Override
