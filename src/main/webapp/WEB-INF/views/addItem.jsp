@@ -13,7 +13,7 @@
     <body>
         Add new item here!
 
-        <form action="/internet_shop_war_exploded/addItem" method="post">
+        <form action="/internet_shop_war_exploded/servlet/addItem" method="post">
             <div class="container">
                 <h1>Register</h1>
                 <p>Please fill in this form to create an Item.</p>
@@ -30,10 +30,10 @@
 
         </form>
         <hr>
-        <a href="/internet_shop_war_exploded/index">Main menu</a>
+        <a href="/internet_shop_war_exploded/servlet/index">Main menu</a>
         <hr>
         <hr>
-        <a href="/internet_shop_war_exploded/items">Catalogue</a>
+        <a href="/internet_shop_war_exploded/servlet/items">Catalogue</a>
         <hr>
     </body>
 </html>

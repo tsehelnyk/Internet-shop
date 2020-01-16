@@ -9,6 +9,8 @@ public interface UserDao {
 
     Optional<User> get(Long id);
 
+    Optional<User> getByToken(String token);
+
     List<User> getAll();
 
     User update(User user);
@@ -16,4 +18,6 @@ public interface UserDao {
     boolean delete(Long id);
 
     boolean delete(User user);
+
+    Optional<User> findByLogin(String login);
 }

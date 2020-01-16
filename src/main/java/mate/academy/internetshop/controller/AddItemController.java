@@ -28,6 +28,6 @@ public class AddItemController extends HttpServlet {
         newItem.setName(req.getParameter("name"));
         newItem.setPrice(BigDecimal.valueOf(Long.parseLong(req.getParameter("price"))));
         itemService.create(newItem);
-        resp.sendRedirect(req.getContextPath() + "/items");
+        resp.sendRedirect(req.getContextPath() + "/servlet/items");
     }
 }

@@ -33,6 +33,6 @@ public class CreateOrderController extends HttpServlet {
         User user = userService.get(USER_ID);
         orderService.completeOrder(bucket.getItems(), user);
         bucketService.clear(bucket);
-        resp.sendRedirect(req.getContextPath() + "/orders");
+        resp.sendRedirect(req.getContextPath() + "/servlet/orders");
     }
 }

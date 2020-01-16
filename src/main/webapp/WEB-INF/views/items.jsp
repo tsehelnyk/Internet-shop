@@ -35,22 +35,22 @@
                         <c:out value="${item.price.toString()}" />
                     </td>
                     <td>
-                        <a href="/internet_shop_war_exploded/add2bucket?item_id=${item.id}">ADD</a>
+                        <a href="/internet_shop_war_exploded/servlet/add2bucket?item_id=${item.id}">ADD</a>
                     </td>
                     <td>
-                        <a href="/internet_shop_war_exploded/deleteItem?item_id=${item.id}">DELETE</a>
+                        <a href="/internet_shop_war_exploded/servlet/deleteItem?item_id=${item.id}">DELETE</a>
                     </td>
                 </tr>
             </c:forEach>
         </table>
         <hr>
-        <a href="/internet_shop_war_exploded/addItem">Add item to catalogue</a>
+        <a href="/internet_shop_war_exploded/servlet/addItem">Add item to catalogue</a>
         <hr>
         <hr>
-        <a href="/internet_shop_war_exploded/index">Main menu</a>
+        <a href="/internet_shop_war_exploded/servlet/index">Main menu</a>
         <hr>
         <hr>
-        <a href="/internet_shop_war_exploded/bucket">User's bucket</a>
+        <a href="/internet_shop_war_exploded/servlet/bucket">User's bucket</a>
         <hr>
     </body>
 </html>
