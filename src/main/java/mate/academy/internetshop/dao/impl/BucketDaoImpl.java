@@ -30,7 +30,7 @@ public class BucketDaoImpl implements BucketDao {
 
     @Override
     public Bucket update(Bucket bucket) {
-        Bucket oldBucket = get(bucket.getId()).get();
+        Bucket oldBucket = get(bucket.getUser()).get();
         Storage.buckets.set(Storage.buckets.indexOf(oldBucket), bucket);
         return bucket;
     }

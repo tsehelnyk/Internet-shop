@@ -9,7 +9,6 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,7 +19,6 @@ import org.apache.log4j.Logger;
 
 public class AuthenticationFilter implements Filter {
 
-    private static final String COOKIE_NAME = "MATE";
     private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class);
 
     @Inject
@@ -34,21 +32,15 @@ public class AuthenticationFilter implements Filter {
                          FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
-        if (req.getCookies() == null) {
-            unAuthenticatedAccess(req, resp);
+
+        Long userId = (Long) req.getSession(true).getAttribute("user_id");
+        Optional<User> user = userService.get(userId);
+        if (user.isPresent()) {
+            LOGGER.info("User " + user.get().getId() + " was authenticated.");
+            filterChain.doFilter(req, resp);
             return;
         }
-        for (Cookie cookie: req.getCookies()) {
-            if (cookie.getName().equals(COOKIE_NAME)) {
-                Optional<User> user = userService.getByToken(cookie.getValue());
-                if (user.isPresent()
-                        && user.get().getId() == ((Long) req.getSession(true).getAttribute("user_id"))) {
-                    LOGGER.info("User " + user.get().getId() + " was authenticated.");
-                    filterChain.doFilter(req, resp);
-                    return;
-                }
-            }
-        }
+
         unAuthenticatedAccess(req, resp);
     }
 

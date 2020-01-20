@@ -19,8 +19,7 @@
             <tr>
                 <th>Order ID</th>
                 <th>User ID</th>
-                <th>Price</th>
-                <th>Delete from bucket</th>
+                <th>Delete order</th>
             </tr>
             <c:forEach var="order" items="${orders}">
                 <tr>

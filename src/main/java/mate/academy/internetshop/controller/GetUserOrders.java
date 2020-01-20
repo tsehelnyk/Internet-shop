@@ -24,7 +24,7 @@ public class GetUserOrders extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         Long userId = (Long) req.getSession(true).getAttribute("user_id");
-        User user = userService.get(userId);
+        User user = userService.get(userId).orElseThrow(NoSuchElementException::new);
         List<Order> orders = orderService.getUserOrders(user)
                 .orElseThrow(NoSuchElementException::new);
         req.setAttribute("orders", orders);

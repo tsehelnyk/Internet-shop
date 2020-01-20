@@ -6,14 +6,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import mate.academy.internetshop.lib.Inject;
+import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
+import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.UserService;
 
 public class InjectDataController extends HttpServlet {
 
     @Inject
     private static UserService userService;
+    @Inject
+    private static BucketService bucketService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -24,7 +28,10 @@ public class InjectDataController extends HttpServlet {
         user.addRole(new Role(Role.RoleName.USER));
         user.setLogin("john");
         user.setPassword("1");
-        userService.create(user);
+        user = userService.create(user);
+        Bucket newBucket = new Bucket();
+        newBucket.setUser(user.getId());
+        bucketService.create(newBucket);
 
         User admin = new User();
         admin.setName("Joey");

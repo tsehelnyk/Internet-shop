@@ -20,6 +20,7 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Role</th>
+                <th>Delete user</th>
             </tr>
             <c:forEach var="user" items="${users}">
                 <tr>

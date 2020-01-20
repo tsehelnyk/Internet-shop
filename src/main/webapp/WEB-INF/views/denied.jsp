@@ -5,5 +5,8 @@
 </head>
 <body>
 <h1>Access denied to requested page.</h1>
+<hr>
+<a href="/internet_shop_war_exploded/servlet/index">Main menu</a>
+<hr>
 </body>
 </html>
