@@ -15,7 +15,7 @@
 
         <form action="/internet_shop_war_exploded/servlet/addItem" method="post">
             <div class="container">
-                <h1>Register</h1>
+                <h1>Add item</h1>
                 <p>Please fill in this form to create an Item.</p>
                 <hr>
 

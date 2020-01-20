@@ -31,7 +31,7 @@
                         <c:out value="${item.name}" />
                     </td>
                     <td>
-                        <c:out value="${item.price.toString()}" />
+                        <c:out value="${item.price}" />
                     </td>
                     <td>
                         <a href="/internet_shop_war_exploded/servlet/delFromBucket?item_id=${item.id}">DELETE</a>

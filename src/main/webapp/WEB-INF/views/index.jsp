@@ -21,6 +21,8 @@
             <hr>
             <a href="/internet_shop_war_exploded/servlet/users">List of users</a>
             <hr>
+            <a href="/internet_shop_war_exploded/servlet/logout">Logout</a>
+            <hr>
         </h3>
     </body>
 </html>

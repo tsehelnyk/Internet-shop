@@ -10,7 +10,7 @@ public interface UserService {
 
     String getToken();
 
-    User get(Long id);
+    Optional<User> get(Long id);
 
     Optional<User> getByToken(String token);
 

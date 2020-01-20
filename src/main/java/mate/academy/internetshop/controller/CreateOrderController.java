@@ -1,6 +1,7 @@
 package mate.academy.internetshop.controller;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +30,7 @@ public class CreateOrderController extends HttpServlet {
             throws ServletException, IOException {
         Long userId = (Long) req.getSession(true).getAttribute("user_id");
         Bucket bucket = bucketService.get(userId);
-        User user = userService.get(userId);
+        User user = userService.get(userId).orElseThrow(NoSuchElementException::new);
         orderService.completeOrder(bucket.getItems(), user);
         bucketService.clear(bucket);
         resp.sendRedirect(req.getContextPath() + "/servlet/orders");
