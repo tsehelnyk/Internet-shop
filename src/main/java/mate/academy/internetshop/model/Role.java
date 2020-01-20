@@ -1,11 +1,15 @@
 package mate.academy.internetshop.model;
 
 public class Role {
-    private final Long id;
+    private Long id;
     private RoleName roleName;
 
     public Role(Long id) {
         this.id = id;
+    }
+
+    public Role(RoleName roleName) {
+        this.roleName = roleName;
     }
 
     public Long getId() {

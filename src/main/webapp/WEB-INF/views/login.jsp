@@ -31,6 +31,7 @@
         </form>
         <div class="container signin">
             <p>Already haven't an account? <a href="/internet_shop_war_exploded/registration">Sign up</a>.</p>
+            <a href="/internet_shop_war_exploded/inject">Inject</a>
         </div>
     </body>
 </html>

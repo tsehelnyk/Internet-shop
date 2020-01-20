@@ -19,6 +19,7 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th>Role</th>
             </tr>
             <c:forEach var="user" items="${users}">
                 <tr>
@@ -27,6 +28,9 @@
                     </td>
                     <td>
                         <c:out value="${user.name}" />
+                    </td>
+                    <td>
+                        <c:out value="${user.roles}" />
                     </td>
                     <td>
                         <a href="/internet_shop_war_exploded/servlet/deleteUser?user_id=${user.id}">DELETE</a>

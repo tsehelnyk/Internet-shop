@@ -41,7 +41,8 @@ public class AuthenticationFilter implements Filter {
         for (Cookie cookie: req.getCookies()) {
             if (cookie.getName().equals(COOKIE_NAME)) {
                 Optional<User> user = userService.getByToken(cookie.getValue());
-                if (user.isPresent()) {
+                if (user.isPresent()
+                        && user.get().getId() == ((Long) req.getSession(true).getAttribute("user_id"))) {
                     LOGGER.info("User " + user.get().getId() + " was authenticated.");
                     filterChain.doFilter(req, resp);
                     return;

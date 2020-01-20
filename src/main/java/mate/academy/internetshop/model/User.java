@@ -1,11 +1,27 @@
 package mate.academy.internetshop.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class User {
     private String name;
     private Long id;
     private String login;
     private String password;
     private String token;
+    private Set<Role> userRole = new HashSet<>();
+
+    public Set<Role> getRoles() {
+        return userRole;
+    }
+
+    public void setRoles(Set<Role> role) {
+        userRole = role;
+    }
+
+    public void addRole(Role role) {
+        userRole.add(role);
+    }
 
     public String getToken() {
         return token;
