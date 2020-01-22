@@ -8,7 +8,6 @@ import mate.academy.internetshop.db.Storage;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.model.Item;
 
-@Dao
 public class ItemDaoImpl implements ItemDao {
 
     private static Long idCount = 0L;
