@@ -25,9 +25,9 @@ public class ItemDaoJDBCImpl extends AbstractDao<Item> implements ItemDao {
         String query = String.format(Locale.ROOT,
                 "INSERT INTO %s.items (`name`, `price`) VALUES ('%s', '%.2f');",
                 DB_NAME, item.getName(), item.getPrice());
-        try (Statement statement = connection.createStatement()){
+        try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(query);
-        } catch (Exception e ) {
+        } catch (Exception e) {
             throw new RuntimeException();
         }
         return item;
@@ -38,7 +38,7 @@ public class ItemDaoJDBCImpl extends AbstractDao<Item> implements ItemDao {
         String query = String.format("SELECT * FROM %s.items WHERE `id` = '%d';", DB_NAME, id);
 
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)){
+            ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
                 long itemId = resultSet.getLong("id");
                 String name = resultSet.getString("name");
@@ -49,7 +49,7 @@ public class ItemDaoJDBCImpl extends AbstractDao<Item> implements ItemDao {
                 item.setPrice(price);
                 return Optional.of(item);
             }
-        } catch (Exception e ) {
+        } catch (Exception e) {
             throw new RuntimeException();
         }
         return Optional.empty();
@@ -61,11 +61,10 @@ public class ItemDaoJDBCImpl extends AbstractDao<Item> implements ItemDao {
                 "UPDATE %s.items SET `name` = '%s', `price` = '%.2f' WHERE `id` = '%d';",
                 DB_NAME, item.getName(), item.getPrice(), item.getId());
 
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)){
+        try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(query);
-                return item;
-        } catch (Exception e ) {
+            return item;
+        } catch (Exception e) {
             throw new RuntimeException();
         }
     }
@@ -77,7 +76,7 @@ public class ItemDaoJDBCImpl extends AbstractDao<Item> implements ItemDao {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(query);
             return true;
-        } catch (Exception e ) {
+        } catch (Exception e) {
             throw new RuntimeException();
         }
     }
@@ -92,7 +91,7 @@ public class ItemDaoJDBCImpl extends AbstractDao<Item> implements ItemDao {
         String query = String.format("SELECT * FROM %s.items;", DB_NAME);
 
         try (Statement statement = connection.createStatement()){
-             ResultSet resultSet = statement.executeQuery(query);
+            ResultSet resultSet = statement.executeQuery(query);
             List<Item> items = new ArrayList<>();
             while (resultSet.next()) {
                 long itemId = resultSet.getLong("id");
@@ -105,7 +104,7 @@ public class ItemDaoJDBCImpl extends AbstractDao<Item> implements ItemDao {
                 items.add(item);
             }
             return items;
-        } catch (Exception e ) {
+        } catch (Exception e) {
             throw new RuntimeException();
         }
     }
