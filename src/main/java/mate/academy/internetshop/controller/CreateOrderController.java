@@ -31,6 +31,10 @@ public class CreateOrderController extends HttpServlet {
         Long userId = (Long) req.getSession(true).getAttribute("user_id");
         Bucket bucket = bucketService.get(userId);
         User user = userService.get(userId).orElseThrow(NoSuchElementException::new);
+        if (bucket.getItems().isEmpty()) {
+            resp.sendRedirect(req.getContextPath() + "/servlet/items");
+            return;
+        }
         orderService.completeOrder(bucket.getItems(), user);
         bucketService.clear(bucket);
         resp.sendRedirect(req.getContextPath() + "/servlet/orders");

@@ -3,6 +3,8 @@ package mate.academy.internetshop.service.impl;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.lib.Inject;
@@ -49,7 +51,9 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     public void deleteItem(Bucket bucket, Item item) {
-        bucket.getItems().remove(item);
+        bucket.setItems(bucket.getItems().stream()
+                .filter(i -> !i.equals(item))
+                .collect(Collectors.toList()));
         bucketDao.update(bucket);
     }
 

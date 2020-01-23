@@ -35,4 +35,10 @@ public class Item {
     public String toString() {
         return " " + id;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Item item = (Item) obj;
+        return this.getId() == item.getId();
+    }
 }
