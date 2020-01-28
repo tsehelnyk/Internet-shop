@@ -43,10 +43,10 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
 
     @Override
     public Optional<Order> get(Long id) {
-        String query = String.format("SELECT o.user_id, o.order_id, i.item_id, i.name, i.price " +
-                        "FROM %s o " +
-                        "JOIN %s oi ON oi.order_id = o.order_id " +
-                        "JOIN %s i on oi.item_id = i.item_id AND o.order_id = ?;",
+        String query = String.format("SELECT o.user_id, o.order_id, i.item_id, i.name, i.price "
+                        + "FROM %s o "
+                        + "JOIN %s oi ON oi.order_id = o.order_id "
+                        + "JOIN %s i on oi.item_id = i.item_id AND o.order_id = ?;",
                 ORDERS_TABLE_NAME, ORDERS_ITEMS_TABLE_NAME, ITEMS_TABLE_NAME);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {

@@ -5,10 +5,8 @@ import java.util.Optional;
 
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.db.Storage;
-import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.model.Bucket;
 
-@Dao
 public class BucketDaoImpl implements BucketDao {
 
     private static Long idCount = 0L;

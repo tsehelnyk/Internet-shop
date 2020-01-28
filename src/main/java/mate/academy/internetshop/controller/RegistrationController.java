@@ -34,7 +34,7 @@ public class RegistrationController extends HttpServlet {
             newUser.setName(req.getParameter("name"));
             newUser.setLogin(req.getParameter("login"));
             newUser.setPassword(req.getParameter("psw"));
-            Role role = new Role(2l);
+            Role role = new Role(2L);
             role.setRoleName(Role.RoleName.USER);
             newUser.addRole(role);
             userService.create(newUser);

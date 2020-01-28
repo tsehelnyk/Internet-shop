@@ -27,8 +27,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User create(User user) {
-        String query = String.format("INSERT INTO %s (name, login, password, token) " +
-                "VALUES (?, ?, ?, ?);", USERS_TABLE_NAME);
+        String query = String.format("INSERT INTO %s (name, login, password, token) "
+                + "VALUES (?, ?, ?, ?);", USERS_TABLE_NAME);
 
         try (PreparedStatement preparedStatement
                      = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -51,8 +51,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public Optional<User> get(Long id) {
-        String query = String.format("SELECT name, login, password, token FROM %s " +
-                        "WHERE user_id = ?;" , USERS_TABLE_NAME);
+        String query = String.format("SELECT name, login, password, token FROM %s "
+                + "WHERE user_id = ?;", USERS_TABLE_NAME);
         User user = new User();
         user.setId(id);
 
@@ -75,8 +75,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public Optional<User> getByToken(String token) {
-        String query = String.format("SELECT name, login, password, user_id FROM %s " +
-                "WHERE token = ?;" , USERS_TABLE_NAME);
+        String query = String.format("SELECT name, login, password, user_id FROM %s "
+                + "WHERE token = ?;", USERS_TABLE_NAME);
         User user = new User();
         user.setToken(token);
 
@@ -101,11 +101,11 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     public List<User> getAll() {
         HashMap<Long, User> users = new HashMap<Long, User>();
 
-        String query = String.format("SELECT u.name, u.login, u.password, u.token, u.user_id, " +
-                "r.role, r.id" +
-                "FROM %s ur " +
-                "JOIN %s r ON (ur.user_role = r.id) " +
-                "JOIN %s u ON (ur.user_id = u.user_id);",
+        String query = String.format("SELECT u.name, u.login, u.password, u.token, u.user_id, "
+                        + "r.role, r.id"
+                        + "FROM %s ur "
+                        + "JOIN %s r ON (ur.user_role = r.id) "
+                        + "JOIN %s u ON (ur.user_id = u.user_id);",
                 USERS_ROLES_TABLE_NAME, ROLES_TABLE_NAME, USERS_TABLE_NAME);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -141,11 +141,10 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     public User update(User user) {
         delete(user);
 
-        String query = String.format("INSERT INTO %s (name, login, password, token, user_id) " +
-                "VALUES (?, ?, ?, ?, ?);", USERS_TABLE_NAME);
+        String query = String.format("INSERT INTO %s (name, login, password, token, user_id) "
+                + "VALUES (?, ?, ?, ?, ?);", USERS_TABLE_NAME);
 
-        try (PreparedStatement preparedStatement
-                     = connection.prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getLogin());
             preparedStatement.setString(3, user.getPassword());
@@ -181,8 +180,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public Optional<User> findByLogin(String login) {
-        String query = String.format("SELECT name, token, password, user_id FROM %s " +
-                "WHERE login = ?;" , USERS_TABLE_NAME);
+        String query = String.format("SELECT name, token, password, user_id FROM %s "
+                + "WHERE login = ?;", USERS_TABLE_NAME);
         User user = new User();
         user.setLogin(login);
 
@@ -203,12 +202,11 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         return Optional.of(user);
     }
 
-    private User setRolesToDb (User user) {
+    private User setRolesToDb(User user) {
         String query = String.format("INSERT INTO %s (user_id, user_role) VALUES (?, ?);",
                 USERS_ROLES_TABLE_NAME);
 
-        try (PreparedStatement preparedStatement
-                     = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             for (Role role : user.getRoles()) {
                 preparedStatement.setLong(1, user.getId());
                 if (role.getId() == null) {
@@ -224,14 +222,14 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         return user;
     }
 
-    private Set<Role> getRolesFromDb(User user){
-        String query = String.format("SELECT r.id, r.role " +
-                            "FROM %s ur " +
-                            "JOIN %s r ON ur.user_role = r.id AND ur.user_id = ?;",
-                            USERS_ROLES_TABLE_NAME, ROLES_TABLE_NAME);
+    private Set<Role> getRolesFromDb(User user) {
+        String query = String.format("SELECT r.id, r.role "
+                        + "FROM %s ur "
+                        + "JOIN %s r ON ur.user_role = r.id AND ur.user_id = ?;",
+                        USERS_ROLES_TABLE_NAME, ROLES_TABLE_NAME);
 
         try (PreparedStatement preparedStatement
-                         = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                         = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, user.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -253,7 +251,9 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getLong("id");
-            } else throw new NoSuchElementException();
+            } else {
+                throw new NoSuchElementException();
+            }
         } catch (Exception e) {
             throw new RuntimeException();
         }

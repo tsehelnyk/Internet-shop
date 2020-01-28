@@ -5,10 +5,8 @@ import java.util.Optional;
 
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.db.Storage;
-import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.model.User;
 
-@Dao
 public class UserDaoImpl implements UserDao {
 
     private static Long idCount = 0L;

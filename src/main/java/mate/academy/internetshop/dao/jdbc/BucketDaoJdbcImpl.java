@@ -43,10 +43,10 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
 
     @Override
     public Optional<Bucket> get(Long userId) {
-        String query = String.format("SELECT b.user_id, b.bucket_id, i.item_id, i.name, i.price " +
-                "FROM %s b " +
-                "JOIN %s bi ON bi.bucket_id = b.bucket_id " +
-                "JOIN %s i on bi.item_id = i.item_id AND b.user_id = ?;",
+        String query = String.format("SELECT b.user_id, b.bucket_id, i.item_id, i.name, i.price "
+                        + "FROM %s b "
+                        + "JOIN %s bi ON bi.bucket_id = b.bucket_id "
+                        + "JOIN %s i on bi.item_id = i.item_id AND b.user_id = ?;",
                 BUCKETS_TABLE_NAME, BUCKETS_ITEMS_TABLE_NAME, ITEMS_TABLE_NAME);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -97,18 +97,17 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
         return bucket;
     }
 
-        @Override
+    @Override
     public boolean delete(Long id) {
-            String query = String.format("DELETE FROM %s WHERE bucket_id = ?;",
-                    BUCKETS_TABLE_NAME);
+        String query = String.format("DELETE FROM %s WHERE bucket_id = ?;", BUCKETS_TABLE_NAME);
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setLong(1, id);
-                preparedStatement.executeUpdate();
-            } catch (Exception e) {
-                throw new RuntimeException();
-            }
-            return true;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+        return true;
     }
 
     @Override
