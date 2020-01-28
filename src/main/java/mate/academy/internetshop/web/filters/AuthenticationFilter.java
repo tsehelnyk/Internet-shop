@@ -12,6 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mate.academy.internetshop.exception.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
@@ -34,11 +35,17 @@ public class AuthenticationFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
 
         Long userId = (Long) req.getSession(true).getAttribute("user_id");
-        Optional<User> user = userService.get(userId);
-        if (user.isPresent()) {
-            LOGGER.info("User " + user.get().getId() + " was authenticated.");
-            filterChain.doFilter(req, resp);
-            return;
+        try {
+            Optional<User> user = userService.get(userId);
+            if (user.isPresent()) {
+                LOGGER.info("User " + user.get().getId() + " was authenticated.");
+                filterChain.doFilter(req, resp);
+                return;
+            }
+        } catch (DataProcessingException e) {
+            LOGGER.error(e);
+            req.setAttribute("dpe_msg", e.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
         }
 
         unAuthenticatedAccess(req, resp);

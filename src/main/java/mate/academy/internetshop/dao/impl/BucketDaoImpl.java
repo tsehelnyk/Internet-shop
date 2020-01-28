@@ -5,10 +5,8 @@ import java.util.Optional;
 
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.db.Storage;
-import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.model.Bucket;
 
-@Dao
 public class BucketDaoImpl implements BucketDao {
 
     private static Long idCount = 0L;
@@ -22,9 +20,9 @@ public class BucketDaoImpl implements BucketDao {
     }
 
     @Override
-    public Optional<Bucket> get(Long id) {
+    public Optional<Bucket> get(Long userId) {
         return Storage.buckets.stream()
-                .filter(bucket -> bucket.getUser().equals(id))
+                .filter(bucket -> bucket.getUser().equals(userId))
                 .findFirst();
     }
 
