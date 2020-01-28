@@ -6,14 +6,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mate.academy.internetshop.exception.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.UserService;
+import org.apache.log4j.Logger;
 
 public class RegistrationController extends HttpServlet {
+
+    private static final Logger LOGGER = Logger.getLogger(RegistrationController.class);
 
     @Inject
     private static UserService userService;
@@ -37,10 +41,17 @@ public class RegistrationController extends HttpServlet {
             Role role = new Role(2L);
             role.setRoleName(Role.RoleName.USER);
             newUser.addRole(role);
-            userService.create(newUser);
-            Bucket newBucket = new Bucket();
-            newBucket.setUser(newUser.getId());
-            bucketService.create(newBucket);
+            try {
+                userService.create(newUser);
+                Bucket newBucket = new Bucket();
+                newBucket.setUser(newUser.getId());
+                bucketService.create(newBucket);
+            } catch (DataProcessingException e) {
+                LOGGER.error(e);
+                req.setAttribute("dpe_msg", e.getMessage());
+                req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
+            }
+
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }

@@ -15,6 +15,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import mate.academy.internetshop.exception.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
@@ -55,15 +56,22 @@ public class AuthorizationFilter implements Filter {
             return;
         }
 
-        Long userId = (Long) req.getSession(true).getAttribute("user_id");
-        Optional<User> user = userService.get(userId);
-        if (verifyRole(user.get(), roleName)) {
-            authorizatedAccess(req, resp, filterChain);
-            return;
-        } else {
-            deniedAccess(req, resp, filterChain);
-            return;
+        try {
+            Long userId = (Long) req.getSession(true).getAttribute("user_id");
+            Optional<User> user = userService.get(userId);
+            if (verifyRole(user.get(), roleName)) {
+                authorizatedAccess(req, resp, filterChain);
+                return;
+            } else {
+                deniedAccess(req, resp, filterChain);
+                return;
+            }
+        } catch (DataProcessingException e) {
+            LOGGER.error(e);
+            req.setAttribute("dpe_msg", e.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
         }
+
     }
 
     private boolean verifyRole(User user, Role.RoleName roleName) {

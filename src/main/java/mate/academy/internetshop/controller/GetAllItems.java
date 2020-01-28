@@ -6,10 +6,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import mate.academy.internetshop.exception.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.service.ItemService;
+import org.apache.log4j.Logger;
 
 public class GetAllItems extends HttpServlet {
+
+    private static final Logger LOGGER = Logger.getLogger(GetAllItems.class);
 
     @Inject
     private static ItemService itemService;
@@ -17,8 +21,15 @@ public class GetAllItems extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        List items = itemService.getAllItems();
-        req.setAttribute("items", items);
+        try {
+            List items = itemService.getAllItems();
+            req.setAttribute("items", items);
+        } catch (DataProcessingException e) {
+            LOGGER.error(e);
+            req.setAttribute("dpe_msg", e.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
+        }
+
         req.getRequestDispatcher("/WEB-INF/views/items.jsp").forward(req, resp);
     }
 

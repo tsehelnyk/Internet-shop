@@ -1,19 +1,8 @@
 package mate.academy.internetshop;
 
-import java.util.ArrayList;
-import mate.academy.internetshop.lib.Inject;
-import mate.academy.internetshop.lib.Injector;
-import mate.academy.internetshop.model.Bucket;
-import mate.academy.internetshop.model.Item;
-import mate.academy.internetshop.model.Order;
-import mate.academy.internetshop.model.User;
-import mate.academy.internetshop.service.BucketService;
-import mate.academy.internetshop.service.ItemService;
-import mate.academy.internetshop.service.OrderService;
-import mate.academy.internetshop.service.UserService;
-
 public class Main {
 
+    /*
     static {
         try {
             Injector.injectDependency();
@@ -49,5 +38,5 @@ public class Main {
         System.out.println(userService.get(order.getUser())
                 + " " + order.getId()
                 + " " + order.getItems());
-    }
+    }*/
 }

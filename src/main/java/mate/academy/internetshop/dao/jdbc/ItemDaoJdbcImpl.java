@@ -4,11 +4,13 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import mate.academy.internetshop.dao.ItemDao;
+import mate.academy.internetshop.exception.DataProcessingException;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.model.Item;
 
@@ -21,7 +23,7 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
     }
 
     @Override
-    public Item create(Item item) {
+    public Item create(Item item) throws DataProcessingException {
 
         String query = String.format("INSERT INTO %s (name, price) VALUES (?, ?);",
                 ITEMS_TABLE_NAME);
@@ -34,14 +36,14 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
             while (resultSet.next()) {
                 item.setId(resultSet.getLong(1));
             }
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to create item: " + e);
         }
         return item;
     }
 
     @Override
-    public Optional<Item> get(Long id) {
+    public Optional<Item> get(Long id) throws DataProcessingException {
         String query = String.format("SELECT * FROM %s WHERE item_id = ?;", ITEMS_TABLE_NAME);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -57,14 +59,14 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 item.setPrice(price);
                 return Optional.of(item);
             }
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to get item: " + e);
         }
         return Optional.empty();
     }
 
     @Override
-    public Item update(Item item) {
+    public Item update(Item item) throws DataProcessingException {
         String query = String.format("UPDATE %s SET name = ?, price = ? WHERE item_id = ?;",
                 ITEMS_TABLE_NAME);
 
@@ -73,32 +75,32 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
             preparedStatement.setBigDecimal(2, item.getPrice());
             preparedStatement.setLong(3, item.getId());
             preparedStatement.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to update item: " + e);
         }
         return item;
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean delete(Long id) throws DataProcessingException {
         String query = String.format("DELETE FROM %s WHERE item_id = ?", ITEMS_TABLE_NAME, id);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException();
+            int rows = preparedStatement.executeUpdate();
+            return rows > 0 ? true : false;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to delete item: " + e);
         }
-        return true;
     }
 
     @Override
-    public boolean delete(Item item) {
+    public boolean delete(Item item) throws DataProcessingException {
         return delete(item.getId());
     }
 
     @Override
-    public List<Item> getAll() {
+    public List<Item> getAll() throws DataProcessingException {
         String query = String.format("SELECT * FROM %s;", ITEMS_TABLE_NAME);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -115,8 +117,8 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 items.add(item);
             }
             return items;
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to get all item: " + e);
         }
     }
 }

@@ -3,6 +3,7 @@ package mate.academy.internetshop.dao.jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import mate.academy.internetshop.dao.UserDao;
+import mate.academy.internetshop.exception.DataProcessingException;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
@@ -26,7 +28,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public User create(User user) {
+    public User create(User user) throws DataProcessingException {
         String query = String.format("INSERT INTO %s (name, login, password, token) "
                 + "VALUES (?, ?, ?, ?);", USERS_TABLE_NAME);
 
@@ -41,8 +43,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             while (resultSet.next()) {
                 user.setId(resultSet.getLong(1));
             }
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to create user: " + e);
         }
 
         setRolesToDb(user);
@@ -50,7 +52,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public Optional<User> get(Long id) {
+    public Optional<User> get(Long id) throws DataProcessingException {
         String query = String.format("SELECT name, login, password, token FROM %s "
                 + "WHERE user_id = ?;", USERS_TABLE_NAME);
         User user = new User();
@@ -65,8 +67,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 user.setPassword(resultSet.getString("password"));
                 user.setToken(resultSet.getString("token"));
             }
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to get user: " + e);
         }
 
         user.setRoles(getRolesFromDb(user));
@@ -74,7 +76,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public Optional<User> getByToken(String token) {
+    public Optional<User> getByToken(String token) throws DataProcessingException {
         String query = String.format("SELECT name, login, password, user_id FROM %s "
                 + "WHERE token = ?;", USERS_TABLE_NAME);
         User user = new User();
@@ -89,8 +91,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 user.setPassword(resultSet.getString("password"));
                 user.setId(resultSet.getLong("user_id"));
             }
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to get user by token: " + e);
         }
 
         user.setRoles(getRolesFromDb(user));
@@ -98,7 +100,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAll() throws DataProcessingException {
         HashMap<Long, User> users = new HashMap<Long, User>();
 
         String query = String.format("SELECT u.name, u.login, u.password, u.token, u.user_id, "
@@ -128,8 +130,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                     users.put(user.getId(),user);
                 }
             }
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to get all users: " + e);
         }
 
         return users.entrySet().stream()
@@ -138,7 +140,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public User update(User user) {
+    public User update(User user) throws DataProcessingException {
         delete(user);
 
         String query = String.format("INSERT INTO %s (name, login, password, token, user_id) "
@@ -151,8 +153,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             preparedStatement.setString(4, user.getToken());
             preparedStatement.setLong(5, user.getId());
             preparedStatement.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to update user: " + e);
         }
 
         setRolesToDb(user);
@@ -160,26 +162,26 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean delete(Long id) throws DataProcessingException {
         String query = String.format("DELETE FROM %s WHERE user_id = ?;",
                 USERS_ROLES_TABLE_NAME);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to delete user: " + e);
         }
         return true;
     }
 
     @Override
-    public boolean delete(User user) {
+    public boolean delete(User user) throws DataProcessingException {
         return delete(user.getId());
     }
 
     @Override
-    public Optional<User> findByLogin(String login) {
+    public Optional<User> findByLogin(String login) throws DataProcessingException {
         String query = String.format("SELECT name, token, password, user_id FROM %s "
                 + "WHERE login = ?;", USERS_TABLE_NAME);
         User user = new User();
@@ -199,14 +201,14 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 }
 
             }
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to find user by login: " + e);
         }
 
         return Optional.empty();
     }
 
-    private User setRolesToDb(User user) {
+    private User setRolesToDb(User user) throws DataProcessingException {
         String query = String.format("INSERT INTO %s (user_id, user_role) VALUES (?, ?);",
                 USERS_ROLES_TABLE_NAME);
 
@@ -220,13 +222,13 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 }
                 preparedStatement.executeUpdate();
             }
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to set user roles to database: " + e);
         }
         return user;
     }
 
-    private Set<Role> getRolesFromDb(User user) {
+    private Set<Role> getRolesFromDb(User user) throws DataProcessingException {
         String query = String.format("SELECT r.id, r.role "
                         + "FROM %s ur "
                         + "JOIN %s r ON ur.user_role = r.id AND ur.user_id = ?;",
@@ -241,13 +243,13 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 role.setRoleName(Role.RoleName.valueOf(resultSet.getString("role")));
                 user.addRole(role);
             }
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to get user roles from database: " + e);
         }
         return user.getRoles();
     }
 
-    private Long getRoleId(Role role) {
+    private Long getRoleId(Role role) throws DataProcessingException {
         String query = String.format("SELECT id FROM %s WHERE role = ?;", ROLES_TABLE_NAME);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -258,8 +260,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             } else {
                 throw new NoSuchElementException();
             }
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to get user role id from database: " + e);
         }
     }
 }
