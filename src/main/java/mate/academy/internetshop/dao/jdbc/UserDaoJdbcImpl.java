@@ -102,7 +102,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         HashMap<Long, User> users = new HashMap<Long, User>();
 
         String query = String.format("SELECT u.name, u.login, u.password, u.token, u.user_id, "
-                        + "r.role, r.id"
+                        + "r.role, r.id "
                         + "FROM %s ur "
                         + "JOIN %s r ON (ur.user_role = r.id) "
                         + "JOIN %s u ON (ur.user_id = u.user_id);",
@@ -189,17 +189,21 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                user.setToken(resultSet.getString("token"));
-                user.setName(resultSet.getString("name"));
-                user.setPassword(resultSet.getString("password"));
-                user.setId(resultSet.getLong("user_id"));
+                if (resultSet.getLong("user_id") > 0) {
+                    user.setToken(resultSet.getString("token"));
+                    user.setName(resultSet.getString("name"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setId(resultSet.getLong("user_id"));
+                    user.setRoles(getRolesFromDb(user));
+                    return Optional.of(user);
+                }
+
             }
         } catch (Exception e) {
             throw new RuntimeException();
         }
 
-        user.setRoles(getRolesFromDb(user));
-        return Optional.of(user);
+        return Optional.empty();
     }
 
     private User setRolesToDb(User user) {

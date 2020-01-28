@@ -45,8 +45,8 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
     public Optional<Bucket> get(Long userId) {
         String query = String.format("SELECT b.user_id, b.bucket_id, i.item_id, i.name, i.price "
                         + "FROM %s b "
-                        + "JOIN %s bi ON bi.bucket_id = b.bucket_id "
-                        + "JOIN %s i on bi.item_id = i.item_id AND b.user_id = ?;",
+                        + "LEFT JOIN %s bi ON bi.bucket_id = b.bucket_id "
+                        + "LEFT JOIN %s i on bi.item_id = i.item_id WHERE b.user_id = ?;",
                 BUCKETS_TABLE_NAME, BUCKETS_ITEMS_TABLE_NAME, ITEMS_TABLE_NAME);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -58,11 +58,13 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
                     bucket.setId(resultSet.getLong("bucket_id"));
                     bucket.setUser(resultSet.getLong("user_id"));
                 }
-                Item item = new Item();
-                item.setId(resultSet.getLong("item_id"));
-                item.setName(resultSet.getString("name"));
-                item.setPrice(BigDecimal.valueOf(resultSet.getLong("price")));
-                bucket.getItems().add(item);
+                if (resultSet.getLong("item_id") > 0) {
+                    Item item = new Item();
+                    item.setId(resultSet.getLong("item_id"));
+                    item.setName(resultSet.getString("name"));
+                    item.setPrice(BigDecimal.valueOf(resultSet.getLong("price")));
+                    bucket.getItems().add(item);
+                }
             }
             return Optional.of(bucket);
         } catch (Exception e) {

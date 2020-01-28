@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> get(Long id) {
-        return userDao.get(id);
+        return (id == null) ? Optional.empty() : userDao.get(id);
     }
 
     @Override

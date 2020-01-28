@@ -42,8 +42,9 @@ INSERT INTO test.buckets (user_id) VALUES (1);
 
 SELECT b.user_id, b.bucket_id, i.item_id, i.name, i.price
 FROM buckets b
-         JOIN buckets_items bi ON bi.bucket_id = b.bucket_id
-         JOIN items i on bi.item_id = i.item_id AND b.user_id = 2;
+         LEFT JOIN buckets_items bi ON bi.bucket_id = b.bucket_id
+         LEFT JOIN items i on bi.item_id = i.item_id
+WHERE user_id = 12;
 
 SELECT * FROM buckets;
 

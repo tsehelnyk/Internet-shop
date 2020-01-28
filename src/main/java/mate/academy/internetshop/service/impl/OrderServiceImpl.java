@@ -46,9 +46,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order completeOrder(List<Item> items, User user) {
-        Order order = create(new Order());
+        Order order = new Order();
         order.setItems(items);
         order.setUser(user.getId());
+        order = create(order);
         update(order);
         return order;
     }
