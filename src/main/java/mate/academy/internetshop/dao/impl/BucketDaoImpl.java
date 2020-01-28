@@ -22,9 +22,9 @@ public class BucketDaoImpl implements BucketDao {
     }
 
     @Override
-    public Optional<Bucket> get(Long id) {
+    public Optional<Bucket> get(Long userId) {
         return Storage.buckets.stream()
-                .filter(bucket -> bucket.getUser().equals(id))
+                .filter(bucket -> bucket.getUser().equals(userId))
                 .findFirst();
     }
 
