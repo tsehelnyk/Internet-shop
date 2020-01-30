@@ -169,7 +169,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     @Override
     public boolean delete(Long id) throws DataProcessingException {
         String query = String.format("DELETE FROM %s WHERE user_id = ?;",
-                USERS_ROLES_TABLE_NAME);
+                USERS_TABLE_NAME);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
