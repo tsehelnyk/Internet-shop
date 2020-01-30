@@ -20,8 +20,10 @@ public class UserServiceImpl implements UserService {
     private static UserDao userDao;
 
     @Override
-    public User create(User user) throws DataProcessingException {
+    public User create(User user) throws DataProcessingException, HashGeneratingException {
         user.setToken(getToken());
+        user.setSalt(HashUtil.getSalt());
+        user.setPassword(HashUtil.hashPassword(user.getPassword(), user.getSalt()));
         return userDao.create(user);
     }
 

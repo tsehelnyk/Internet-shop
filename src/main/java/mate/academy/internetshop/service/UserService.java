@@ -8,7 +8,7 @@ import mate.academy.internetshop.exception.HashGeneratingException;
 import mate.academy.internetshop.model.User;
 
 public interface UserService {
-    User create(User user) throws DataProcessingException;
+    User create(User user) throws DataProcessingException, HashGeneratingException;
 
     String getToken();
 
