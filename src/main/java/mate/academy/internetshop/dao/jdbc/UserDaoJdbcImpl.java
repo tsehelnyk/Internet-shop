@@ -106,8 +106,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     public List<User> getAll() throws DataProcessingException {
         HashMap<Long, User> users = new HashMap<Long, User>();
 
-        String query = String.format("SELECT u.name, u.login, u.password, u.salt, u.token, u.user_id, "
-                        + "r.role, r.id "
+        String query = String.format("SELECT u.name, u.login, u.password, u.salt, u.token, "
+                        + "u.user_id, r.role, r.id "
                         + "FROM %s ur "
                         + "JOIN %s r ON (ur.user_role = r.id) "
                         + "JOIN %s u ON (ur.user_id = u.user_id);",

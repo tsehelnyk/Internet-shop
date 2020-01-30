@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import mate.academy.internetshop.dao.UserDao;
+import mate.academy.internetshop.exception.AuthenticationException;
 import mate.academy.internetshop.exception.DataProcessingException;
-import mate.academy.internetshop.exceptions.AuthenticationException;
-import mate.academy.internetshop.exceptions.HashGeneratingException;
+import mate.academy.internetshop.exception.HashGeneratingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.lib.Service;
 import mate.academy.internetshop.model.User;
@@ -74,6 +74,4 @@ public class UserServiceImpl implements UserService {
     public boolean checkPassword(User user, String password) throws HashGeneratingException {
         return user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()));
     }
-
-
 }

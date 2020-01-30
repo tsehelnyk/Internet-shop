@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mate.academy.internetshop.exception.DataProcessingException;
-import mate.academy.internetshop.exceptions.HashGeneratingException;
+import mate.academy.internetshop.exception.HashGeneratingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Role;
@@ -39,9 +39,10 @@ public class RegistrationController extends HttpServlet {
             User newUser = new User();
             newUser.setName(req.getParameter("name"));
             newUser.setLogin(req.getParameter("login"));
+            String password = req.getParameter("psw");
             try {
                 newUser.setSalt(HashUtil.getSalt());
-                newUser.setPassword(HashUtil.hashPassword(req.getParameter("psw"), newUser.getSalt()));
+                newUser.setPassword(HashUtil.hashPassword(password, newUser.getSalt()));
                 Role role = new Role(2L);
                 role.setRoleName(Role.RoleName.USER);
                 newUser.addRole(role);

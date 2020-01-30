@@ -4,8 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import mate.academy.internetshop.controller.AddItemController;
-import mate.academy.internetshop.exception.DataProcessingException;
-import mate.academy.internetshop.exceptions.HashGeneratingException;
+import mate.academy.internetshop.exception.HashGeneratingException;
 import org.apache.log4j.Logger;
 
 public class HashUtil {

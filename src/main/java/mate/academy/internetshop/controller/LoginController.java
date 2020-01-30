@@ -7,9 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import mate.academy.internetshop.exception.AuthenticationException;
 import mate.academy.internetshop.exception.DataProcessingException;
-import mate.academy.internetshop.exceptions.AuthenticationException;
-import mate.academy.internetshop.exceptions.HashGeneratingException;
+import mate.academy.internetshop.exception.HashGeneratingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
