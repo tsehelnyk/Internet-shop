@@ -6,10 +6,12 @@ import java.util.UUID;
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.exception.DataProcessingException;
 import mate.academy.internetshop.exceptions.AuthenticationException;
+import mate.academy.internetshop.exceptions.HashGeneratingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.lib.Service;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
+import mate.academy.internetshop.util.HashUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -60,11 +62,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(String login, String password)
-            throws AuthenticationException, DataProcessingException {
+            throws AuthenticationException, DataProcessingException, HashGeneratingException {
         Optional<User> user = userDao.findByLogin(login);
-        if (user.isEmpty() || !user.get().getPassword().equals(password)) {
+        if (user.isEmpty() || !checkPassword(user.get(), password)) {
             throw new AuthenticationException("Wrong login or password");
         }
         return user.get();
     }
+
+    @Override
+    public boolean checkPassword(User user, String password) throws HashGeneratingException {
+        return user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()));
+    }
+
+
 }

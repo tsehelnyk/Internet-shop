@@ -34,7 +34,7 @@ public class DeleteFromBucketController extends HttpServlet {
         } catch (DataProcessingException e) {
             LOGGER.error(e);
             req.setAttribute("dpe_msg", e.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/Error.jsp").forward(req, resp);
         }
 
         resp.sendRedirect(req.getContextPath() + "/servlet/bucket");

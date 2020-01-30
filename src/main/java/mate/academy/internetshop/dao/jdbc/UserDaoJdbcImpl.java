@@ -29,15 +29,16 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User create(User user) throws DataProcessingException {
-        String query = String.format("INSERT INTO %s (name, login, password, token) "
-                + "VALUES (?, ?, ?, ?);", USERS_TABLE_NAME);
+        String query = String.format("INSERT INTO %s (name, login, password, salt, token) "
+                + "VALUES (?, ?, ?, ?, ?);", USERS_TABLE_NAME);
 
         try (PreparedStatement preparedStatement
                      = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getLogin());
             preparedStatement.setString(3, user.getPassword());
-            preparedStatement.setString(4, user.getToken());
+            preparedStatement.setBytes(4, user.getSalt());
+            preparedStatement.setString(5, user.getToken());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()) {
@@ -53,7 +54,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public Optional<User> get(Long id) throws DataProcessingException {
-        String query = String.format("SELECT name, login, password, token FROM %s "
+        String query = String.format("SELECT name, login, password, salt, token FROM %s "
                 + "WHERE user_id = ?;", USERS_TABLE_NAME);
         User user = new User();
         user.setId(id);
@@ -65,6 +66,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 user.setLogin(resultSet.getString("login"));
                 user.setName(resultSet.getString("name"));
                 user.setPassword(resultSet.getString("password"));
+                user.setSalt(resultSet.getBytes("salt"));
                 user.setToken(resultSet.getString("token"));
             }
         } catch (SQLException e) {
@@ -77,7 +79,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public Optional<User> getByToken(String token) throws DataProcessingException {
-        String query = String.format("SELECT name, login, password, user_id FROM %s "
+        String query = String.format("SELECT name, login, password, salt, user_id FROM %s "
                 + "WHERE token = ?;", USERS_TABLE_NAME);
         User user = new User();
         user.setToken(token);
@@ -89,6 +91,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 user.setLogin(resultSet.getString("login"));
                 user.setName(resultSet.getString("name"));
                 user.setPassword(resultSet.getString("password"));
+                user.setSalt(resultSet.getBytes("salt"));
                 user.setId(resultSet.getLong("user_id"));
             }
         } catch (SQLException e) {
@@ -103,7 +106,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     public List<User> getAll() throws DataProcessingException {
         HashMap<Long, User> users = new HashMap<Long, User>();
 
-        String query = String.format("SELECT u.name, u.login, u.password, u.token, u.user_id, "
+        String query = String.format("SELECT u.name, u.login, u.password, u.salt, u.token, u.user_id, "
                         + "r.role, r.id "
                         + "FROM %s ur "
                         + "JOIN %s r ON (ur.user_role = r.id) "
@@ -122,6 +125,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                     user.setLogin(resultSet.getString("login"));
                     user.setName(resultSet.getString("name"));
                     user.setPassword(resultSet.getString("password"));
+                    user.setSalt(resultSet.getBytes("salt"));
                     user.setToken(resultSet.getString("token"));
                     user.setId(resultSet.getLong("user_id"));
                     Role role = new Role(resultSet.getLong("id"));
@@ -143,15 +147,16 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     public User update(User user) throws DataProcessingException {
         delete(user);
 
-        String query = String.format("INSERT INTO %s (name, login, password, token, user_id) "
-                + "VALUES (?, ?, ?, ?, ?);", USERS_TABLE_NAME);
+        String query = String.format("INSERT INTO %s (name, login, password, salt, token, user_id) "
+                + "VALUES (?, ?, ?, ?, ?, ?);", USERS_TABLE_NAME);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getLogin());
             preparedStatement.setString(3, user.getPassword());
-            preparedStatement.setString(4, user.getToken());
-            preparedStatement.setLong(5, user.getId());
+            preparedStatement.setBytes(4, user.getSalt());
+            preparedStatement.setString(5, user.getToken());
+            preparedStatement.setLong(6, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException("Failed to update user: " + e);
@@ -182,7 +187,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public Optional<User> findByLogin(String login) throws DataProcessingException {
-        String query = String.format("SELECT name, token, password, user_id FROM %s "
+        String query = String.format("SELECT name, token, password, salt, user_id FROM %s "
                 + "WHERE login = ?;", USERS_TABLE_NAME);
         User user = new User();
         user.setLogin(login);
@@ -195,6 +200,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                     user.setToken(resultSet.getString("token"));
                     user.setName(resultSet.getString("name"));
                     user.setPassword(resultSet.getString("password"));
+                    user.setSalt(resultSet.getBytes("salt"));
                     user.setId(resultSet.getLong("user_id"));
                     user.setRoles(getRolesFromDb(user));
                     return Optional.of(user);

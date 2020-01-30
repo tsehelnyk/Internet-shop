@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import mate.academy.internetshop.exception.DataProcessingException;
 import mate.academy.internetshop.exceptions.AuthenticationException;
+import mate.academy.internetshop.exceptions.HashGeneratingException;
 import mate.academy.internetshop.model.User;
 
 public interface UserService {
@@ -24,5 +25,7 @@ public interface UserService {
     boolean delete(User user) throws DataProcessingException;
 
     User login(String login, String password)
-            throws AuthenticationException, DataProcessingException;
+            throws AuthenticationException, DataProcessingException, HashGeneratingException;
+
+    boolean checkPassword(User user, String password) throws HashGeneratingException;
 }

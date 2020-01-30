@@ -7,12 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mate.academy.internetshop.exception.DataProcessingException;
+import mate.academy.internetshop.exceptions.HashGeneratingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.UserService;
+import mate.academy.internetshop.util.HashUtil;
 import org.apache.log4j.Logger;
 
 public class RegistrationController extends HttpServlet {
@@ -37,19 +39,20 @@ public class RegistrationController extends HttpServlet {
             User newUser = new User();
             newUser.setName(req.getParameter("name"));
             newUser.setLogin(req.getParameter("login"));
-            newUser.setPassword(req.getParameter("psw"));
-            Role role = new Role(2L);
-            role.setRoleName(Role.RoleName.USER);
-            newUser.addRole(role);
             try {
+                newUser.setSalt(HashUtil.getSalt());
+                newUser.setPassword(HashUtil.hashPassword(req.getParameter("psw"), newUser.getSalt()));
+                Role role = new Role(2L);
+                role.setRoleName(Role.RoleName.USER);
+                newUser.addRole(role);
                 userService.create(newUser);
                 Bucket newBucket = new Bucket();
                 newBucket.setUser(newUser.getId());
                 bucketService.create(newBucket);
-            } catch (DataProcessingException e) {
+            } catch (DataProcessingException | HashGeneratingException e) {
                 LOGGER.error(e);
                 req.setAttribute("dpe_msg", e.getMessage());
-                req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/views/Error.jsp").forward(req, resp);
             }
 
             resp.sendRedirect(req.getContextPath() + "/login");
