@@ -7,8 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import mate.academy.internetshop.exception.AuthenticationException;
 import mate.academy.internetshop.exception.DataProcessingException;
-import mate.academy.internetshop.exceptions.AuthenticationException;
+import mate.academy.internetshop.exception.HashGeneratingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
@@ -42,10 +43,10 @@ public class LoginController extends HttpServlet {
             LOGGER.info("Wrong login or password");
             req.setAttribute("errorMessage", "Incorrect login or password.");
             req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
-        } catch (DataProcessingException e) {
+        } catch (DataProcessingException | HashGeneratingException e) {
             LOGGER.error(e);
             req.setAttribute("dpe_msg", e.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/Error.jsp").forward(req, resp);
         }
     }
 }

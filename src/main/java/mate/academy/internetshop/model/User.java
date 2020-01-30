@@ -8,8 +8,25 @@ public class User {
     private Long id;
     private String login;
     private String password;
+    private byte[] salt;
     private String token;
     private Set<Role> userRole = new HashSet<>();
+
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
+    }
+
+    public Set<Role> getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(Set<Role> userRole) {
+        this.userRole = userRole;
+    }
 
     public Set<Role> getRoles() {
         return userRole;
