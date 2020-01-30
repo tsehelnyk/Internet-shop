@@ -9,6 +9,7 @@ import mate.academy.internetshop.exception.DataProcessingException;
 import mate.academy.internetshop.exception.HashGeneratingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.lib.Service;
+import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
 import mate.academy.internetshop.util.HashUtil;
@@ -21,6 +22,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(User user) throws DataProcessingException, HashGeneratingException {
+        Role role = new Role(2L);
+        role.setRoleName(Role.RoleName.USER);
+        user.addRole(role);
         user.setToken(getToken());
         user.setSalt(HashUtil.getSalt());
         user.setPassword(HashUtil.hashPassword(user.getPassword(), user.getSalt()));
