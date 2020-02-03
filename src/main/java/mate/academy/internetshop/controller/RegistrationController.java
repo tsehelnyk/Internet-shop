@@ -10,7 +10,6 @@ import mate.academy.internetshop.exception.DataProcessingException;
 import mate.academy.internetshop.exception.HashGeneratingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Bucket;
-import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.UserService;
