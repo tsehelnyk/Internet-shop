@@ -9,9 +9,6 @@ import java.util.Enumeration;
 import java.util.List;
 import org.apache.log4j.Logger;
 
-/**
- * Students will implement this on Lesson 16 (Servlet)
- */
 public class Injector {
     private static final String PROJECT_MAIN_PACKAGE = "mate.academy.internetshop";
     private static List<Class> classes = new ArrayList<>();
@@ -41,15 +38,6 @@ public class Injector {
         }
     }
 
-    /**
-     * Scans all classes accessible from the context class loader which belong
-     * to the given package and subpackages.
-     *
-     * @param packageName The base package
-     * @return The classes
-     * @throws ClassNotFoundException if the class cannot be located
-     * @throws IOException if I/O errors occur
-     */
     private static List<Class> getClasses(String packageName)
             throws IOException, ClassNotFoundException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -68,14 +56,6 @@ public class Injector {
         return classes;
     }
 
-    /**
-     * Recursive method used to find all classes in a given directory and subdirs.
-     *
-     * @param directory   The base directory
-     * @param packageName The package name for classes found inside the base directory
-     * @return The classes
-     * @throws ClassNotFoundException if the class cannot be located
-     */
     private static List<Class> findClasses(File directory, String packageName)
             throws ClassNotFoundException {
         List<Class> classes = new ArrayList<Class>();
